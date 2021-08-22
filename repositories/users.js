@@ -37,12 +37,16 @@ class UsersRepository{
         const records = await this.getAll();
         return records.find(record=>record.id===id);
     }
+    async delete(id){
+        const records = await this.getAll();
+        const filterRecords = records.filter(record => record.id !==id);
+        await this.writeAll(filterRecords);
+    }
 }
 
 
 const test = async ()=>{
     const repo = new UsersRepository('users.json');
-    const user = await repo.getOne('ghg456');
-    console.log(user);
+    await repo.create({email: 'angel@mail.com', password: 'fvkhesfb52'});
 };
 test();
