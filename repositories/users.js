@@ -13,17 +13,20 @@ class UsersRepository{
             fs.writeFileSync(this.filename, '[]');
         }
     }
+
     async getAll(){
         return JSON.parse(await fs.promises.readFile(this.filename,{
             encoding: 'utf8'
         }));
     }
+
     async create(attrs){
         attrs.id = this.randomId();
         const records = await this.getAll();
         records.push(attrs);
 
         await this.writeAll(records);
+        return attrs;
     }
 
     async writeAll(records){
@@ -69,17 +72,4 @@ class UsersRepository{
     }
 }
 
-// module.exports = UsersRepository;
-
-// //Anougther file..
-// const usersRepository =require('./users');
-// const repo = new UsersRepository('users.json');
-
-const test = async ()=>{
-    const repo = new UsersRepository('users.json');
-    //await repo.create({email: 'angel@mail.com', password: 'fvkhesfb52'});
-    //await repo.update('b1c3d1fb', {email: 'ANGEL8@mail.com', password: 'RFGYH852DFa'})
-    const user = await repo.getOneBy({email: 'angel@mail.com'});
-    console.log(user);
-};
-test();
+module.exports = new UsersRepository('users.json');
