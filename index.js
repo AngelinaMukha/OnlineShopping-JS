@@ -10,7 +10,7 @@ app.use(cookieSession({
     keys: ['sd9fjn78h']
 }));
 
-app.get('/', (req, res)=>{
+app.get('/signup', (req, res)=>{
     res.send(`
         <div>
             <form method="POST">
@@ -23,7 +23,7 @@ app.get('/', (req, res)=>{
     `);
 });
 
-app.post('/', async(req, res)=>{
+app.post('/signup', async(req, res)=>{
     const {email, password ,passwordConfirmation}=req.body;
 
     const existingUser= await usersRepository.getOneBy({email: email});
@@ -40,7 +40,40 @@ app.post('/', async(req, res)=>{
     //store the id of that user inside the users cookie
     req.session.userId = user.id;
 
-    res.send('Post works');
+    res.send('Your account was created');
+});
+
+app.get('/signout', (req, res)=>{
+    req.session=null;
+    res.send('You are logged out');
+});
+
+app.get('/signin', (req, res)=>{
+    res.send(`
+    <div>
+    <form method="POST">
+        <input name="email" placeholder="email"/>
+        <input name="password" placeholder="password"/>
+        <button>Sign In</button>
+    </form>
+</div>
+    `);
+});
+app.post('/signin', async(req, res)=>{
+    const {email, password}=req.body;
+
+    const user= await usersRepository.getOneBy({email: email});
+    if(!user){
+        return res.send('Entered email is not in use');
+    }
+
+    if(password!==user.password){
+        return res.send('Invalid password');
+    }
+
+    req.session.userId = user.id;
+    res.send('You are signed in');
+
 });
 
 app.listen(3000, ()=>{
