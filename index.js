@@ -59,6 +59,7 @@ app.get('/signin', (req, res)=>{
 </div>
     `);
 });
+
 app.post('/signin', async(req, res)=>{
     const {email, password}=req.body;
 
@@ -67,7 +68,11 @@ app.post('/signin', async(req, res)=>{
         return res.send('Entered email is not in use');
     }
 
-    if(password!==user.password){
+    const validPassword = await usersRepository.comparePasswords(
+        user.password,
+        password
+    );
+    if(!validPassword){
         return res.send('Invalid password');
     }
 

@@ -11,5 +11,15 @@
     "email": "daegrfzds",
     "password": "aaa",
     "id": "3964981b"
+  },
+  {
+    "email": "malchyk@mail.com",
+    "password": "7e9bf42b02e98770a26094ec579847e0ccec6fb0611ca868abbfd6de9bbe3daa02ec5acb3ad60353335930393582fd677c17fc238f80f55fa8e17185c9fb4db2.ce89432ecde0ac7b",
+    "id": "21e0ee90"
+  },
+  {
+    "email": "test@mail.com",
+    "password": "d1e3c1697f48fa71b19b27383a33f3590b22cd0b3f71299b9964f55f744bef39c42922075d93ab43c52b75c2383670998f35aff85618d2a830111b192bc3eb08.866d1ac4777a5688",
+    "id": "5c6e9c4a"
   }
 ]
