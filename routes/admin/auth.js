@@ -1,7 +1,10 @@
 const express = require('express');
+const {check, validationResult}= require('express-validator');
+
 const usersRepository=require('../../repositories/users');
 const signupTemplate = require('../../views/admin/auth/signup');
 const signinTemplate = require('../../views/admin/auth/signin');
+const {requireEmail, requirePassword, requirePasswordConfirmation} =require('./validators');
 
 const router = express.Router();
 
@@ -9,16 +12,15 @@ router.get('/signup', (req, res)=>{
     res.send(signupTemplate({req}));
 });
 
-router.post('/signup', async(req, res)=>{
+router.post('/signup', [
+    requireEmail,
+    requirePassword,
+    requirePasswordConfirmation
+],
+async(req, res)=>{
+    const errors = validationResult(req);
+    console.log(errors);
     const {email, password ,passwordConfirmation}=req.body;
-
-    const existingUser= await usersRepository.getOneBy({email: email});
-    if(existingUser){
-        return res.send('Entered email is already in use');
-    }
-    if(password!==passwordConfirmation){
-        return res.send('Passwords do not match');
-    }
 
     //creating a user in usersRepository to represent person
     const user = await usersRepository.create({email, password});
